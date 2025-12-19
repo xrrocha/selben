@@ -12,7 +12,9 @@ Este repositorio contiene datos reales del programa SELBEN del Ecuador (2003), u
 
 ## La Historia
 
-<img src="docs/img/selben-history-sm.png" alt="Ecuador: escuelas, encuestas y el caos de la digitación" width="300" align="left" style="margin-right: 20px; margin-bottom: 10px;">
+<p align="center">
+  <img src="docs/img/selben-history-sm.png" alt="Ecuador: escuelas, encuestas y el caos de la digitación" width="400">
+</p>
 
 En 2003, el *Sistema de Selección de Beneficiarios* (SELBEN) del Ecuador administraba encuestas para determinar elegibilidad en programas de ayuda internacional. Uno de estos programas, el PAE (*Programa de Alimentación Escolar*), buscaba complementar la dieta de los estudiantes a través de sus escuelas.
 
@@ -21,8 +23,6 @@ Había un problema.
 Los formularios ya habían sido impresos, distribuidos, llenados y recolectados cuando surgió un nuevo requisito: la ayuda debía entregarse a través de las escuelas donde los estudiantes asistían, no directamente a las familias. Los formularios no tenían campo para nombres de escuelas.
 
 La solución fue improvisada. Los formularios fueron devueltos a nivel parroquial. Los nombres de escuelas se agregaron a mano, a veces por encuestadores, a veces por los propios niños. Estos nombres fueron luego transcritos a computadoras por personal de ingreso de datos con distintos niveles de entrenamiento y equipamiento.
-
-<br clear="both">
 
 El resultado: **6,7 millones de registros** que contienen nombres de escuelas con toda variación concebible. La misma escuela podía aparecer como:
 
@@ -66,8 +66,6 @@ Los nombres transcritos exhiben patrones sistemáticos:
 ---
 
 ## Qué Es Este Repositorio
-
-<img src="docs/img/selben-logo-sm.png" alt="Logo Selben" width="300" align="left" style="margin-right: 20px; margin-bottom: 10px;">
 
 Este es un **recurso educativo** para cualquier persona interesada en:
 
