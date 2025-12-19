@@ -67,7 +67,7 @@ Los nombres transcritos exhiben patrones sistemáticos:
 
 ## Qué Es Este Repositorio
 
-<img src="docs/img/selben-logo-sm.png" alt="Logo Selben" width="100" align="left" style="margin-right: 20px; margin-bottom: 10px;">
+<img src="docs/img/selben-logo-sm.png" alt="Logo Selben" width="300" align="left" style="margin-right: 20px; margin-bottom: 10px;">
 
 Este es un **recurso educativo** para cualquier persona interesada en:
 
