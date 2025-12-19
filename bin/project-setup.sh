@@ -43,6 +43,9 @@ else
     echo ".gitignore already exists"
 fi
 
+# Uncompress encuestas file
+(cd data && xz -z < data/encuestas.txt.xz > data/encuestas.txt)
+
 echo ""
 echo "Initialization complete."
 echo "Activate venv with: source .venv/bin/activate"
