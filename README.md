@@ -110,8 +110,14 @@ Cuando algo sale mal, puedes rastrearlo. Cuando algo sale bien, puedes explicar 
 # Clonar y configurar
 git clone https://github.com/xrrocha/selben.git
 cd selben
-./bin/project-setup.sh
+./bin/inicializar-proyecto.sh
 source .venv/bin/activate
+```
+
+Opcionalmente, si planeas trabajar con el archivo de encuestas (️217M! ⚠️), puedes descomprimirlo con:
+
+```
+(cd data && xz -z < encuestas.txt.xz > encuestas.txt)
 ```
 
 ---
