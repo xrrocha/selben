@@ -15,6 +15,7 @@ if [ ! -d ".venv" ]; then
 else
     echo ".venv already exists"
 fi
+source .venv/bin/activate
 
 # Initialize git repo if not exists
 if [ ! -d ".git" ]; then
