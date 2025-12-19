@@ -67,6 +67,8 @@ Los nombres transcritos exhiben patrones sistemáticos:
 
 ## Qué Es Este Repositorio
 
+<img src="docs/img/selben-logo-sm.png" alt="Logo Selben" width="100" align="right">
+
 Este es un **recurso educativo** para cualquier persona interesada en:
 
 - **Resolución de entidades** — emparejar nombres mal escritos con entidades canónicas
