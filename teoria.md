@@ -5,8 +5,8 @@
 Enfrentamos un problema de **resolución de entidades ruidosas**: mapear un gran conjunto de cadenas degradadas y variantes (nombres observados) a un conjunto más pequeño de entidades canónicas (escuelas reales). Este es un mapeo de muchos a uno donde:
 
 - **Corpus fuente**: ~385,900 cadenas de nombres distintas de transcripciones de encuestas
-- **Corpus objetivo**: ~15,754 entidades canónicas de escuelas (PAE) o ~16,384 (SINEC)
-- **Ratio de compresión**: ~25:1 (variantes promedio por entidad)
+- **Corpus objetivo**: hasta 21,534 códigos de escuela distintos (PAE ∪ SINEC)
+- **Ratio de compresión**: ~18:1 (variantes promedio por entidad)
 
 El objetivo no es meramente agrupar cadenas similares, sino **atribuir** cada nombre observado a su referente canónico—o reconocerlo como no atribuible.
 
@@ -30,9 +30,19 @@ encuestas ──(?)──► PAE ──(10,602)──► SINEC
     └──────── códigos de ubicación ─────┘
 ```
 
-- **PAE ∩ SINEC**: 10,602 escuelas aparecen en ambos corpus de referencia (enlazadas por `codigo`)
-- **PAE ∖ SINEC**: Escuelas en PAE no en SINEC (posiblemente escuelas de ubicaciones adyacentes)
-- **SINEC ∖ PAE**: Escuelas no en el programa de alimentación
+| Conjunto | Conteo | Notas |
+|----------|--------|-------|
+| PAE ∩ SINEC | 10,602 | Enlazadas por `codigo_escuela` |
+| PAE ∖ SINEC | 5,151 | Provincias amazónicas, escuelas rurales/indígenas |
+| SINEC ∖ PAE | 5,781 | Guayaquil urbano, escuelas privadas |
+| **PAE ∪ SINEC** | **21,534** | Cota superior de entidades únicas |
+
+**Observación crítica**: PAE y SINEC no son alternativas—son **complementarios con sesgo sistemático**:
+- **PAE** sobre-representa: rural, amazónico (provincias 15, 21, 23), indígena, bajos ingresos
+- **SINEC** sobre-representa: urbano (especialmente Guayaquil), escuelas privadas
+
+Ninguno es superconjunto del otro. La referencia consolidada debe ser su unión.
+
 - **encuestas → ?**: El mapeo que buscamos descubrir
 
 ### 2.3 La Ubicación como Identificador Opaco
@@ -93,6 +103,18 @@ Los nombres observados exhiben múltiples tipos de ruido, frecuentemente co-ocur
 | **Prefijos numéricos** | `1BLANCA MARTINEZ` | Artefacto de entrada de datos |
 | **Formas abreviadas** | `FCO` → FRANCISCO | Restricciones de espacio |
 
+### 3.6 Ruido de Codificación (_Mojibake_)
+
+PAE sufre corrupción de codificación ausente en SINEC—probablemente Windows-1252 interpretado como UTF-8:
+
+| Artefacto | Ejemplo | Causa |
+|-----------|---------|-------|
+| `¥` por `Ñ` | `DUEÑAS` → `DUE¥AS`, `NIÑO` → `NI¥O` | _Mojibake_ de carácter especial |
+| `Ø` por `º` | `Nº 465` → `NØ 465` | Mismo problema |
+| `Ø` por `0` | `10 DE DICIEMBRE` → `1Ø DE DICIEMBRE` | Corrupción de dígito |
+
+**Implicación**: Esta corrupción es **unilateral** (solo PAE). Requiere preprocesamiento antes de cualquier emparejamiento inter-corpus.
+
 ---
 
 ## 4. Observaciones Estructurales
@@ -128,7 +150,48 @@ Los archivos PAE y SINEC mismos contienen:
 - Direcciones en blanco o parciales
 - Nombres duplicados dentro de la misma ubicación
 
+**Cuantificación**: Entre las 10,602 escuelas que comparten `codigo_escuela` en ambos archivos:
+- **785 discrepancias de nombre** (7.4%) — mismo código, diferente nombre
+- **465 discrepancias de ubicación** (4.4%) — mismo código, diferente parroquia
+
+Las causas de discrepancia incluyen:
+
+| PAE | SINEC | Causa |
+|-----|-------|-------|
+| `TRANQUILINO MONTESDEOCA DUE¥AS` | `TRANQUILINO MONTESDEOCA DUEÑAS` | Divergencia de codificación |
+| `SIN NOMBRE (SAN JOSE DE CHAZO)` | `SEGUNDO MELCHOR ESTRADA GARCIA` | Deriva temporal |
+| `RUMIÑAHUI` | `RUMI AHUI` | Corrupción de espacios |
+| `EUGENIO ESPEJO` | `EUGENIO ESPEJO (CERRO PRIETO)` | Adición de calificador |
+| `VICTOR MANUEL RENDON` | `24 DE JULIO` | Renombre completo |
+
 **Implicación**: La resolución de entidades no es emparejar cadenas ruidosas con objetivos perfectos, sino alinear dos distribuciones ruidosas de varianza diferente.
+
+**Duplicados intra-archivo** (tras normalización de espacios):
+- PAE: 15,753 → 15,612 únicos (141 fusionados)
+- SINEC: 16,383 → 15,669 únicos (714 fusionados)
+
+SINEC tiene 5× más duplicados internos que PAE—posiblemente reflejando fusiones históricas o registros administrativos redundantes.
+
+### 4.4 La Convención `# NÚMERO` de Guayaquil
+
+Ambos archivos contienen escuelas con sufijos `# NÚMERO` (ej. `SIMON BOLIVAR # 47`):
+- SINEC: 2,288 escuelas (14%)
+- PAE: 1,541 escuelas (10%)
+
+Esto **no es ruido**—es una convención municipal de desambiguación:
+- **97.5% de las entradas `# NÚMERO`** de SINEC están en provincia 09 (Guayas)
+- Misma concentración geográfica en PAE
+
+**Implicación**: La normalización debería preservar o extraer estos números como metadatos, no eliminarlos como ruido.
+
+### 4.5 El Marcador `(INDIGENA)`
+
+SINEC etiqueta 434 escuelas con sufijo `(INDIGENA)`; PAE tiene 329. Estas son escuelas bilingües/interculturales que sirven a comunidades indígenas, frecuentemente con nombres en kichwa:
+- `INTI RAYMI`
+- `RUMIÑAHUI`
+- `PACHA MAMA`
+
+**Implicación**: Estas escuelas siguen patrones de nomenclatura diferentes. El marcador podría ayudar en desambiguación—las escuelas indígenas forman un subdominio léxico distinto.
 
 ---
 
@@ -204,7 +267,13 @@ Los _tokens_ de nombre raros llevan más poder discriminativo que los comunes. U
 
 ## 7. Preguntas Abiertas
 
-1. **¿Cuál es el número verdadero de entidades?** PAE y SINEC se solapan pero no completamente. ¿Cuál es la unión?
+1. **¿Cuál es el número verdadero de entidades?** *(Parcialmente respondida)*
+
+   La cota superior es **21,534 códigos distintos** (PAE ∪ SINEC). Sin embargo, algunos códigos no solapados pueden referirse a la misma escuela física registrada diferentemente. Tras deduplicación por `(ubicacion, nombre_normalizado)`:
+   - PAE: 15,612 pares únicos
+   - SINEC: 15,669 pares únicos
+
+   El conteo verdadero emergerá tras la fusión.
 
 2. **¿Cómo deberíamos manejar "SIN NOMBRE"?** Estos son marcadores de posición legítimos pero irresolubles.
 
