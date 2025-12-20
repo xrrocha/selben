@@ -4,7 +4,7 @@
 
 Este documento articula una filosofía de trabajo para proyectos de exploración computacional, aquellos donde no hay especificaciones a priori, donde el conocimiento debe descubrirse, y donde el objetivo no es entregar funcionalidad sino comprender profundamente.
 
-Surge de la práctica: del proyecto Selbén, un ejercicio de resolución de nombres de entidad mal transcritos sobre datos ecuatorianos de 2003. Pero trasciende ese contexto particular. Es un marco general, destilado de experiencia y enriquecido por la sabiduría de [Peter Naur](https://en.wikipedia.org/wiki/Peter_Naur) (en inglés), nuestro santo patrono metodológico.
+Surge de la práctica: del [proyecto Selbén](https://github.com/xrrocha/selben), un ejercicio de resolución de nombres de entidad mal transcritos sobre datos ecuatorianos de 2003. Pero trasciende ese contexto particular. Es un marco general, destilado de experiencia y enriquecido por la sabiduría de [Peter Naur](https://en.wikipedia.org/wiki/Peter_Naur) (en inglés), nuestro santo patrono metodológico.
 
 ## Una Nota Sobre el "Nosotros"
 
