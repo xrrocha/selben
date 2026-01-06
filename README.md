@@ -117,7 +117,7 @@ source .venv/bin/activate
 Opcionalmente, si planeas trabajar con el archivo de encuestas (️217M! ⚠️), puedes descomprimirlo con:
 
 ```
-(cd data && xz -z < encuestas.txt.xz > encuestas.txt)
+(cd data && xz -z < encuestas.tsv.xz > encuestas.tsv)
 ```
 
 ---
